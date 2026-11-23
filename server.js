@@ -3,6 +3,7 @@
  *
  */
 
+// TODO 1: Import Express, create the app, and choose the port.
 import express from "express";
 
 const app = express();
@@ -89,12 +90,22 @@ const animals = [
 // Routes
 // ------------------------------------
 
-// GET /api/animals sends every animal.
+// TODO 1: GET /api/animals sends every animal.
 app.get("/api/animals", (req, res) => {
 	res.json(animals);
 });
 
 // TODO 2: GET /api/animals/:id sends one animal, or a 404.
+// req.params.id is text, so convert it before comparing.
+app.get("/api/animals/:id", (req, res) => {
+	const animal = animals.find((a) => a.id === Number(req.params.id));
+
+	if (animal) {
+		res.json(animal);
+	} else {
+		res.status(404).json({ error: "Animal not found" });
+	}
+});
 
 // TODO 3: GET /api/available-animals and GET /api/adopted-animals
 
@@ -102,6 +113,7 @@ app.get("/api/animals", (req, res) => {
 // Start the Server
 // ------------------------------------
 
+// TODO 1: Start listening on the port.
 app.listen(port, () => {
 	console.log(`Server running at http://localhost:${port}`);
 });

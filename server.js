@@ -95,6 +95,17 @@ app.get("/api/animals", (req, res) => {
 	res.json(animals);
 });
 
+// TODO 3: GET /api/available-animals and GET /api/adopted-animals
+// These must come before /api/animals/:id, or ":id" would match "available"
+// and "adopted" and send a 404. Both path styles work.
+app.get(["/api/animals/available", "/api/available-animals"], (req, res) => {
+	res.json(animals.filter((a) => !a.adopted));
+});
+
+app.get(["/api/animals/adopted", "/api/adopted-animals"], (req, res) => {
+	res.json(animals.filter((a) => a.adopted));
+});
+
 // TODO 2: GET /api/animals/:id sends one animal, or a 404.
 // req.params.id is text, so convert it before comparing.
 app.get("/api/animals/:id", (req, res) => {
@@ -106,8 +117,6 @@ app.get("/api/animals/:id", (req, res) => {
 		res.status(404).json({ error: "Animal not found" });
 	}
 });
-
-// TODO 3: GET /api/available-animals and GET /api/adopted-animals
 
 // ------------------------------------
 // Start the Server

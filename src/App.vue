@@ -30,7 +30,7 @@ async function loadAnimals() {
 
 	try {
 		// TODO 4: Load the animals from your API instead of the JSON file.
-		const response = await fetch("/animals.json");
+		const response = await fetch("/api/animals");
 
 		// A 404 or 500 still comes back as a response, so check it.
 		if (!response.ok) {
@@ -48,6 +48,32 @@ async function loadAnimals() {
 }
 
 loadAnimals();
+
+// ------------------------------------
+// Show One Animal's Details
+// ------------------------------------
+
+// TODO 4: Show one animal's details from /api/animals/:id.
+const details = ref(null);
+const detailsError = ref("");
+
+async function showDetails(id) {
+	detailsError.value = "";
+
+	try {
+		const response = await fetch(`/api/animals/${id}`);
+
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}`);
+		}
+
+		details.value = await response.json();
+	} catch (err) {
+		console.error(err);
+		details.value = null;
+		detailsError.value = "Sorry, that animal's details couldn't be loaded.";
+	}
+}
 
 // ------------------------------------
 // Adopt or Return an Animal
@@ -124,6 +150,31 @@ function setSort(sort) {
 				@sort="setSort"
 			/>
 
+			<p v-if="detailsError" class="error-message">{{ detailsError }}</p>
+
+			<section
+				v-if="details"
+				class="animal-details"
+				aria-labelledby="details-heading"
+			>
+				<h3 id="details-heading">{{ details.name }}</h3>
+				<dl>
+					<dt>Species</dt>
+					<dd>{{ details.species }}</dd>
+					<template v-if="details.breed">
+						<dt>Breed</dt>
+						<dd>{{ details.breed }}</dd>
+					</template>
+					<dt>Age</dt>
+					<dd>{{ details.age }} years</dd>
+					<dt>Status</dt>
+					<dd>{{ details.adopted ? "Adopted" : "Available" }}</dd>
+					<dt>Intake date</dt>
+					<dd>{{ details.intakeDate }}</dd>
+				</dl>
+				<button type="button" @click="details = null">Close</button>
+			</section>
+
 			<div id="animal-list" aria-live="polite">
 				<p v-if="loading">Loading animals...</p>
 				<p v-else-if="error" class="error-message">{{ error }}</p>
@@ -136,6 +187,7 @@ function setSort(sort) {
 						:key="animal.id"
 						:animal="animal"
 						@toggle="toggleAdoption(animal)"
+						@details="showDetails(animal.id)"
 					/>
 				</div>
 			</div>

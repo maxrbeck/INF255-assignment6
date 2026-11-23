@@ -9,7 +9,7 @@ defineProps({
 // The animals belong to App, so the card never changes animal.adopted
 // itself. It only tells App the button was clicked, and App decides what
 // happens.
-const emit = defineEmits(["toggle"]);
+const emit = defineEmits(["toggle", "details"]);
 
 // Turns "2026-08-20" into "Arrived Aug 20, 2026 (55 days ago)".
 function arrivalText(intakeDate) {
@@ -27,5 +27,6 @@ function arrivalText(intakeDate) {
 		<button type="button" @click="emit('toggle')">
 			{{ animal.adopted ? "Return" : "Adopt" }}
 		</button>
+		<button type="button" @click="emit('details')">Details</button>
 	</article>
 </template>

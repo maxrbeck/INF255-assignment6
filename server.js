@@ -3,7 +3,10 @@
  *
  */
 
-// TODO 1: Import Express, create the app, and choose the port.
+import express from "express";
+
+const app = express();
+const port = 3000;
 
 // ------------------------------------
 // Animal Data
@@ -86,7 +89,10 @@ const animals = [
 // Routes
 // ------------------------------------
 
-// TODO 1: GET /api/animals sends every animal.
+// GET /api/animals sends every animal.
+app.get("/api/animals", (req, res) => {
+	res.json(animals);
+});
 
 // TODO 2: GET /api/animals/:id sends one animal, or a 404.
 
@@ -96,4 +102,6 @@ const animals = [
 // Start the Server
 // ------------------------------------
 
-// TODO 1: Start listening on the port.
+app.listen(port, () => {
+	console.log(`Server running at http://localhost:${port}`);
+});

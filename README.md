@@ -1,3 +1,18 @@
+# TODO 5
+1. What is the point of separating the app into a client and server component (Vue and Express)? Isn't it simpler to just keep everything in a single place?
+
+Keeping them separate makes the app easier to manage and update. If the animals are stored on the server, you can add, remove, or change information without having to modify the Vue app itself. The Vue side just asks for the data and shows it. The split didn't really feel more complicated to me since I already knew how it worked.
+
+2. How do you think you will use the client/server combination in your final project? Which part will live on the client, and which on the server?
+
+My final project is an esports points tracking website for a Fortnite league. The client is the part people see and click on: the match night results, the season standings, the team rosters, and the scoring rules, plus the forms staff use to enter results. The server holds the teams, players, match results, and scoring rules in a database, handles the staff login, and does the checks, like not letting the same team be entered twice in one game. It also sends all the league data to the page as JSON so the standings stay updated on match night.
+
+3. Do you prefer working with Vue or vanilla (basic) JS, and why?
+
+I prefer Vue. The real-time updates are really nice because when the data changes, the page updates on its own without me having to change the HTML by hand. Being able to split the code into components like `AnimalCard` and `AnimalControls` also made it easier to keep things organized.
+
+
+
 # Assignment 6: Adding the Server
 
 In Assignment 5 the Vue app loaded a static animals.json file. Now you'll write an Express server, server.js, that owns the animals and answers requests with JSON, and the Vue app will read everything from it. No database is needed: the server keeps the animals in an array.
